@@ -16,6 +16,7 @@ const fn_banner = async (ctx, next) => {
 };
 
 const fn_home = async (ctx, next) => {
+    console.log('GET /api/home start')
     let productModel = model.product
 
     let products = await  productModel.findAll({
