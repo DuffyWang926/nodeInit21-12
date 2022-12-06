@@ -3,13 +3,21 @@ const fn_productList = async (ctx, next) => {
     let body = ctx.request.body
     const { type, size } = body
     let productModel = model.product
-
-    let productList = await  productModel.findAll({
-        where: {
-            
-        }
-    })
-    console.log(`find ${productList} productList:`);
+    let productList = []
+    if(type < 2){
+        productList = await  productModel.findAll({
+            where: {
+                
+            }
+        })
+    }else if(type == 2){
+        productList = await  productModel.findAll({
+            where: {
+                type:2
+            }
+        })
+    }
+    console.log(`productList.length`,productList.length);
     let imgList = Array.isArray(productList) && productList.map( (v,i) =>{
         let res = {
             imgId:v.id,
@@ -21,7 +29,7 @@ const fn_productList = async (ctx, next) => {
         }
         return res
     })
-    if(type == 0){
+    if(type != 1){
         imgList.sort((a,b) =>{
             return a.downSum - b.downSum
         })
