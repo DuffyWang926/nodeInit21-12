@@ -58,10 +58,15 @@ const cors = require('koa2-cors')
 
 
 app.use(cors());
+
 app.use(bodyParser({
     enableTypes:['json', 'form', 'text'],
-    encode: "utf-8"
+    encode: "utf-8",
+    jsonLimit:'50mb'
   }));
+// app.use(bodyParser.urlencoded({limit: '5000mb', extended: true}));
+// app.use(bodyParser.json());
+
 app.use(controller());
 
 app.listen(3000);

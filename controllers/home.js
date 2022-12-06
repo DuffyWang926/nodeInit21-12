@@ -24,6 +24,7 @@ const fn_home = async (ctx, next) => {
         }
     })
     console.log(`find ${products} products:`);
+    let catList = []
     let imgList = Array.isArray(products) && products.map( (v,i) =>{
         let res = {
             imgId:v.productId,
@@ -31,8 +32,13 @@ const fn_home = async (ctx, next) => {
             title:v.title,
             author:v.author,
             downSum:v.sum,
-            updatedAt:v.updatedAt
+            updatedAt:v.updatedAt,
+            type:v.type
         }
+        if(v.type == 2){
+            catList.push(res)
+        }
+
         return res
     })
     imgList.sort((a,b) =>{
@@ -57,7 +63,18 @@ const fn_home = async (ctx, next) => {
             type:1,
             imgList:newList
         },
+        
     ]
+    if(catList?.length > 0){
+        dataRes.push(
+            {
+                title:'猫咪表情包',
+                type:2,
+                imgList:catList
+            }
+
+        )
+    }
     ctx.response.body = dataRes
     
 };

@@ -4,14 +4,14 @@ const axios = require('axios')
 var fn_upload = async (ctx, next) => {
     let body = ctx.request.body
     const { type, name, theme, gif} = body
-    console.log('body',body)
+    // console.log('body',body)
     
-    console.log('ctx.file',ctx.file)
+    // console.log('ctx.file',ctx.file)
     let now = new Date().getTime() + ''
     let code = 200
     let writePath = '../products/' + now + '.gif'
-    let filePath = 'http://127.0.0.1:3000/product/' + now
-    // let filePath = 'https://www.mengshikejiwang.top/api/product/' + now
+    // let filePath = 'http://127.0.0.1:3000/api/product/' + now
+    let filePath = 'https://www.mengshikejiwang.top/api/product/' + now
     if(ctx.file ){
         let fileBuffer = ctx.file ? ctx.file.buffer : 
         console.log('fileBuffer',fileBuffer)
@@ -29,7 +29,7 @@ var fn_upload = async (ctx, next) => {
 
     }else{
         bytes = gif
-        console.log(bytes)
+        // console.log(bytes)
         fs.writeFile(writePath, gif,"binary", function(err) {
             if (err) {
                 throw err;
@@ -68,23 +68,9 @@ let uploadFile = async (ctx, next) => {
     
     console.log('ctx.file',ctx.file)
     console.log('ctx.content',ctx.content)
-    // console.log('ctx',ctx)
     let now = new Date().getTime() + ''
     let code = 200
-    // let writePath = '../products/' + now + '.gif'
-    let writePath = '../products/' + now + '.txt'
-    let filePath = 'http://127.0.0.1:3000/product/' + now
-    // let filePath = 'https://www.mengshikejiwang.top/api/product/' + now
-    // try{
-    //     fs.writeFile(writePath, body,"binary", function(err) {
-    //         if (err) {
-    //             throw err;
-    //         }
-    //     });
-    // }catch(e){
-    //     console.log(e)
-
-    // }
+    
    
     ctx.response.body = {
         code,
@@ -94,33 +80,36 @@ let uploadFile = async (ctx, next) => {
 
 let uploadLocalFile = async (ctx, next) => {
     let body = ctx.request.body
-    // let path = 'C:\\gifProducts\\' + 'test.gif'
-    let path = 'test.gif'
+    console.log("body",body)
+    let { theme, name, title, themeType, filePath, author } = body
+    let titleList = title.split('-')
+    title = titleList.length > 0 ? titleList[0] : ''
     let byteData = ''
-
+    if( themeType == '宠物' ){
+        themeType = 2
+    }
     try{
-        fs.readFile(path,"binary", function(err,readData) {
+        fs.readFile(filePath,"binary", function(err,readData) {
             if (err) {
                 throw err;
             }else{
                 byteData = readData
-                console.log('byteData',byteData)
-                // byteData = Buffer.from(data)
-                // console.log('byteData',byteData)
                 let writePath = 'test2.gif'
                 fs.writeFile(writePath, byteData, 'binary',function(err,data) {
                     if (err) {
                         throw err;
                     }else{
-                        console.log('write', data)
+                        // console.log('write', data)
                     }
                 });
                 let url = 'http://127.0.0.1:3000/api/upload'
+                // let url = 'https://www.mengshikejiwang.top/api/upload'
                 let data ={
                              'gif':byteData,
-                             "name":'dd',
-                             "type": '1',
-                             "theme":'dd',
+                             "name":name || 'name',
+                             "type": themeType || 'type',
+                             "theme":theme || 'theme',
+                             author
                         }
                 let headers = {
                     'Content-Type': 'multipart/form-data'
@@ -132,8 +121,8 @@ let uploadLocalFile = async (ctx, next) => {
         
     }catch(e){
         console.log(e)
-
     }
+    let code = 200
     ctx.response.body = {
         code,
     }
