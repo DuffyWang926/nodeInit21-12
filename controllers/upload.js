@@ -102,8 +102,8 @@ let uploadLocalFile = async (ctx, next) => {
                         // console.log('write', data)
                     }
                 });
-                let url = 'http://127.0.0.1:3000/api/upload'
-                // let url = 'https://www.mengshikejiwang.top/api/upload'
+                // let url = 'http://127.0.0.1:3000/api/upload'
+                let url = 'https://www.mengshikejiwang.top/api/upload'
                 let data ={
                              'gif':byteData,
                              "name":name || 'name',
