@@ -66,11 +66,15 @@ const fn_home = async (ctx, next) => {
         
     ]
     if(catList?.length > 0){
+        catList.sort((a,b) =>{
+            return a.downSum - b.downSum
+        })
+        let newCatList = catList.slice(0,3)
         dataRes.push(
             {
                 title:'猫咪表情包',
                 type:2,
-                imgList:catList
+                imgList:newCatList
             }
 
         )

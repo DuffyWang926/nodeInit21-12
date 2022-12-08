@@ -2,6 +2,7 @@ const fs = require('fs')
 const { promises } = require('fs');
 const model = require('../model');
 var deleteGif = async (ctx, next) => {
+    console.log('deleteGif start')
     const id = ctx.query.id;
     let productModel = model.product
     let filePath = '../products/' + id + '.gif'
